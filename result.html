@@ -15,41 +15,39 @@
 
     <body class="sb-nav-fixed">
         <script>
-            function getRadio(Radio) {
-                //GET Gender
-                let value = null;
-                const genderNodeList = document.getElementsByName(Radio);
-                genderNodeList.forEach((node) => {
-                    if(node.checked) {
-                        value = node.value;
-                    }
-                })
-                return Number(value);
+            function get_json(){
+                var patient_info = localStorage.getItem('patient.json');
+                console.log(patient_info);
+                return JSON.parse(patient_info);
             }
 
-            function getValue(ID) {
-                return Number(document.getElementById(ID).value);
+            function print_recommandation() {
+                var chemo_reco= {
+                    "Top1_reco":"Surveillance",
+                    "Top1_sub":"Surveillance Treamtment Recommendation",
+                    "Top1_suggestion":"N/A",
+                    "Top1_prei_cycle":"N/A",
+                    "Top1_percents":80,
+                    "Top2_reco":"Chemotherapy",
+                    "Top2_sub":"Chemotherapy Treamtment Recommendation",
+                    "Top2_suggestion":"FOLFOX",
+                    "Top2_prei_cycle":"N/A",
+                    "Top2_percents":20,
+                }
+                document.getElementById("Top1_sub")
+                for (var key in chemo_reco) {
+                    document.getElementById(key).innerHTML = chemo_reco[key];
+                }
+                console.log(chemo_reco);
             }
 
-
-            function Result() {
-                let dict = {
-                    'Age' : getValue('Age'),
-                    'Gender' : getRadio('Gender'),
-                    'pT' : getValue('pT'),
-                    'pN' : getValue('pN'),
-                    'pM' : getValue('pM'),
-                    'pTNM' : getValue('pTNM'),
-                    'Chemotherapy_History' : getRadio('Chemotherapy_History'),
-                    'After_Operation' : getRadio('After_Operation'),
-                    'Early_Complication' : getRadio('Early_Complication')
-                };
-
-                console.log(dict);
-                var json = JSON.stringify(dict);
+            function print_patient(patient_info) {
+                console.log(patient_info)
+                for (var key in patient_info) {
+                    console.log(key)
+                    document.getElementById("table_"+key).innerHTML = patient_info[key];
+                }
             }
-
-
         </script>
 
 
@@ -120,22 +118,29 @@
                             <div class="card pb-4 mb-2">
                                 <div class="row no-gutters align-items-center">
                                     <div class="col-12 col-md-5 px-4 pt-4">
-                                        <a href="javascript:void(0)" class="text-dark font-weight-semibold">Surveillance</a>
+                                        <a href="javascript:void(0)" class="text-dark font-weight-semibold" id="Top1_reco">Surveillance</a>
                                         <br>
-                                        <small class="text-muted">Surveillance Treamtment Recommendation</small>
+                                        <small class="text-muted" id="Top1_sub">Surveillance Treamtment Recommendation</small>
                                     </div>
                                     <div class="col-4 col-md-2 small px-4 pt-4">
                                         <strong>Suggestion</strong>
-                                        <br> N/A
+                                        <br>
+                                        <div id="Top1_suggestion">
+                                            N/A
+                                        </div>
+
                                     </div>
                                     <div class="col-4 col-md-2 small px-4 pt-4">
                                         Period / Cycle
-                                        <br> N/A
+                                        <br>
+                                        <div id="Top1_prei_cycle">
+                                            N/A
+                                        </div>
                                     </div>
                                     <div class="col-4 col-md-3 px-4 pt-4">
-                                        <div class="text-right text-muted small">81%</div>
+                                        <div class="text-right text-muted small" id="Top1_percents">81%</div>
                                         <div class="progress" style="height: 6px;">
-                                            <div class="progress-bar" style="width: 80%;"></div>
+                                            <div class="progress-bar" id="top1_progress" style="width: 80%;"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -147,22 +152,24 @@
                             <div class="card pb-4 mb-2">
                                 <div class="row no-gutters align-items-center">
                                     <div class="col-12 col-md-5 px-4 pt-4">
-                                        <a href="javascript:void(0)" class="text-dark font-weight-semibold">Chemotherapy</a>
+                                        <a href="javascript:void(0)" class="text-dark font-weight-semibold" id="Top2_reco">Chemotherapy</a>
                                         <br>
-                                        <small class="text-muted">Chemotherapy Treamtment Recommendation</small>
+                                        <small class="text-muted" id="Top2_sub">Chemotherapy Treamtment Recommendation</small>
                                     </div>
                                     <div class="col-4 col-md-2 small px-4 pt-4">
                                         <strong>Suggestion</strong>
-                                        <br> FOLFOX
+                                        <br>
+                                        <div id="Top2_suggestion">FOLFOX</div>
                                     </div>
                                     <div class="col-4 col-md-2 small px-4 pt-4">
                                         Period / Cycle
-                                        <br> 4 Months
+                                        <br>
+                                        <div id="Top2_prei_cycle">4 Months</div>
                                     </div>
                                     <div class="col-4 col-md-3 px-4 pt-4">
-                                        <div class="text-right text-muted small">19%</div>
+                                        <div class="text-right text-muted small" id="Top2_percents">19%</div>
                                         <div class="progress" style="height: 6px;">
-                                            <div class="progress-bar" style="width: 19%;"></div>
+                                            <div class="progress-bar" id="Top2_progress" style="width: 19%;"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -195,37 +202,37 @@
                                                 <tbody>
                                                 <tr>
                                                     <td>Age</td>
-                                                    <td id="table_age">45</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Weight</td>
-                                                    <td>55.0</td>
+                                                    <td id="table_Age"></td>
                                                 </tr>
                                                 <tr>
                                                     <td>Gender</td>
-                                                    <td>F</td>
+                                                    <td id="table_Gender"></td>
                                                 </tr>
                                                 <tr>
-                                                    <td>ECOG</td>
-                                                    <td>1</td>
+                                                    <td>BMI</td>
+                                                    <td id="table_BMI"></td>
+                                                </tr>
+                                                <thead>
+                                                <tr>
+                                                    <th>Other Characteristics</th>
+                                                </tr>
+                                                </thead>
+                                                <tr>
+                                                    <td>pT</td>
+                                                    <td id="table_pT"></td>
                                                 </tr>
                                                 <tr>
-                                                    <td>TNM Stage</td>
-                                                    <td>T2N0</td>
+                                                    <td>pN</td>
+                                                    <td id="table_pN"></td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Risk Factor</td>
-                                                    <td>Yes</td>
+                                                    <td>pM</td>
+                                                    <td id="table_pM"></td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Histology</td>
-                                                    <td>Yes</td>
+                                                    <td>pTNM</td>
+                                                    <td id="table_pTNM"></td>
                                                 </tr>
-                                                <tr>
-                                                    <td>Lymphovascular Invasion</td>
-                                                    <td>Yes</td>
-                                                </tr>
-
                                                 <thead>
                                                 <tr>
                                                     <th>Labs</th>
@@ -233,16 +240,16 @@
                                                 </thead>
 
                                                 <tr>
-                                                    <td>Total Bilirubin</td>
-                                                    <td>0.4</td>
+                                                    <td>Chemotherapy_History</td>
+                                                    <td id="table_Chemotherapy_History"></td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Serum Creatinine</td>
-                                                    <td>1.1</td>
+                                                    <td>After_Operation</td>
+                                                    <td id="table_After_Operation"></td>
                                                 </tr>
                                                 <tr>
-                                                    <td>AST/ALT</td>
-                                                    <td>40/30</td>
+                                                    <td>Early_Complication</td>
+                                                    <td id="table_Early_Complication"></td>
                                                 </tr>
                                                 </tbody>
                                             </table>
@@ -279,5 +286,10 @@
         <script src="http://code.highcharts.com/highcharts.js"></script>
         <script src="https://code.highcharts.com/modules/networkgraph.js"></script>
 
+        <script>
+            var patient_info = get_json();
+            print_recommandation();
+            print_patient(patient_info)
+        </script>
     </body>
 </html>

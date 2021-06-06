@@ -15,6 +15,18 @@
 
     <body class="sb-nav-fixed">
         <script>
+            function submit_button() {
+                if (confirm("정말로 제출하겠습니까?") == true) {
+                    let json = Result();
+                    window.open("result.html");
+
+
+                }
+                else {   //취소
+                    return;
+                }
+            }
+
             function getRadio(Radio) {
                 //GET Gender
                 let value = null;
@@ -47,7 +59,11 @@
 
                 console.log(dict);
                 var json = JSON.stringify(dict);
+                localStorage.setItem("patient.json", json)
+                return json;
             }
+
+
 
 
         </script>
@@ -87,7 +103,7 @@
 
                             <div class="sb-sidenav-menu-heading">Recommendation Result</div>
 
-                            <a class="nav-link" href="result.html">
+                            <a class="nav-link" onclick="submit_button()">
                                 <div class="sb-nav-link-icon"><i class="fas fa-poll"></i></div>
                                 Result
                             </a>
@@ -120,7 +136,7 @@
                             </div>
 
                             <div class="col-md-1">
-                                <button type="button" class="btn mt-4" onclick="Result()">Next</button>
+                                <button type="button" class="btn mt-4" onclick="submit_button()">Next</button>
                             </div>
 
                         </div>
@@ -153,7 +169,7 @@
                                                 </label>
                                             </div>
                                         </div>
-                                        <div id='result'>결과</div>
+                                        <div id='result'></div>
 
 
                                     </div>
